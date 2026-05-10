@@ -1,0 +1,29 @@
+SCALE UP INFRASTRUCTURE
+
+INFRASTRUCTURE OVERVIEW:
+User → HAProxy Cluster (LB1 + LB2) → Web Server → App Server → Database Server
+
+ADDITIONAL ELEMENTS AND WHY:
+
+1. ADDITIONAL SERVER:
+   Added to split components onto dedicated servers.
+   Each server handles one role: web, application, or database.
+   Improves performance, security and scalability.
+
+2. SECOND LOAD BALANCER (HAProxy Cluster):
+   Two HAProxy load balancers configured as a cluster.
+   Eliminates SPOF at load balancer level.
+   If one load balancer fails, the other takes over automatically.
+
+3. DEDICATED WEB SERVER (Nginx):
+   Handles only HTTP/HTTPS requests and serves static files.
+   Separated from app server to avoid resource competition.
+
+4. DEDICATED APPLICATION SERVER:
+   Handles only business logic and dynamic content processing.
+   Can be scaled independently from web server.
+
+5. DEDICATED DATABASE SERVER (MySQL):
+   Handles only data storage and retrieval.
+   Dedicated resources improve query performance.
+   Easier to secure and backup independently.
