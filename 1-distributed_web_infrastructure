@@ -1,0 +1,52 @@
+DISTRIBUTED WEB INFRASTRUCTURE
+================================
+
+INFRASTRUCTURE OVERVIEW:
+User → HAProxy Load Balancer → Server 1 (Nginx + App + MySQL Primary)
+                             → Server 2 (Nginx + App + MySQL Replica)
+
+ADDITIONAL ELEMENTS AND WHY:
+-----------------------------
+1. LOAD BALANCER (HAProxy): Distributes incoming traffic between 2 servers
+   to avoid overloading a single server and improve availability.
+
+2. SERVER 2: Second server added for redundancy and to handle more traffic.
+   If Server 1 fails, Server 2 continues serving requests.
+
+3. MySQL REPLICA: Added for data redundancy and read performance.
+
+LOAD BALANCER CONFIGURATION:
+-----------------------------
+Algorithm: Round Robin
+How it works: Each request is sent to the next server in sequence.
+Server 1 gets request 1, Server 2 gets request 2, Server 1 gets request 3...
+
+Active-Active vs Active-Passive:
+- Active-Active: Both servers handle traffic simultaneously (our setup).
+- Active-Passive: One server handles traffic, other is on standby.
+  Passive server activates only if active server fails.
+Our setup uses ACTIVE-ACTIVE.
+
+DATABASE PRIMARY-REPLICA CLUSTER:
+----------------------------------
+- Primary (Master) node: Handles all WRITE operations (INSERT, UPDATE, DELETE).
+  Changes are replicated to Replica node.
+- Replica (Slave) node: Receives copies of data from Primary.
+  Handles READ operations only.
+
+PRIMARY vs REPLICA for application:
+- Application writes data ONLY to Primary node.
+- Application can read data from Replica node to reduce Primary load.
+
+ISSUES WITH THIS INFRASTRUCTURE:
+---------------------------------
+1. SPOF: Load balancer is a single point of failure.
+   If HAProxy goes down, entire website becomes unreachable.
+
+2. SECURITY ISSUES:
+   - No firewall: Servers are exposed to direct attacks.
+   - No HTTPS: Traffic between users and servers is unencrypted.
+   - Sensitive data can be intercepted.
+
+3. NO MONITORING: No way to detect server failures, high CPU usage,
+   or abnormal traffic patterns in real time.
