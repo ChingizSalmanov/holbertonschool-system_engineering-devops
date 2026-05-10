@@ -1,0 +1,13 @@
+SECURED AND MONITORED WEB INFRASTRUCTURE
+
+FIREWALLS: Filter traffic, block unauthorized access, protect servers.
+HTTPS: Encrypts traffic, prevents data interception.
+SSL CERT: Added to serve www.foobar.com over HTTPS.
+MONITORING: Tracks health, detects failures, analyzes traffic.
+MONITORING CLIENTS: Agents collect metrics and send to Sumo Logic.
+QPS MONITORING: Configure agent to count Nginx requests per second.
+
+ISSUES:
+1. SSL termination at load balancer: internal traffic unencrypted.
+2. Single MySQL Primary: if it fails, no writes possible.
+3. Same components on all servers: resource competition, harder to scale.
