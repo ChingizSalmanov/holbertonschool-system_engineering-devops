@@ -1,0 +1,40 @@
+SIMPLE WEB STACK INFRASTRUCTURE
+================================
+
+USER REQUEST FLOW:
+User types www.foobar.com in browser
+→ DNS resolves www.foobar.com to IP 8.8.8.8
+→ Request reaches our single server
+→ Nginx handles the request
+→ Application server processes it
+→ MySQL database provides data
+→ Response sent back to user
+
+COMPONENTS:
+-----------
+1. SERVER: A physical/virtual machine with IP 8.8.8.8 that hosts all components.
+
+2. DOMAIN NAME (foobar.com): Translates human-readable address to IP 8.8.8.8.
+   www is a CNAME or A record pointing to 8.8.8.8.
+
+3. DNS RECORD: "www" is an A record pointing to IP 8.8.8.8.
+
+4. WEB SERVER (Nginx): Receives HTTP/HTTPS requests, serves static files,
+   forwards dynamic requests to application server.
+
+5. APPLICATION SERVER: Executes business logic, processes dynamic content,
+   communicates with database.
+
+6. DATABASE (MySQL): Stores and manages website data.
+
+7. COMMUNICATION PROTOCOL: HTTP/HTTPS over TCP/IP between server and user.
+
+ISSUES WITH THIS INFRASTRUCTURE:
+---------------------------------
+1. SPOF (Single Point of Failure): If the server goes down, entire website is down.
+
+2. DOWNTIME DURING MAINTENANCE: Deploying new code requires restarting Nginx,
+   causing website unavailability.
+
+3. CANNOT SCALE: Single server cannot handle high traffic loads.
+   No load balancing or horizontal scaling possible.
